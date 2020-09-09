@@ -9,6 +9,9 @@
 #include "cbmp.h"
 
 int cellCount = 0;
+int xcoordinates[400] = {};
+int ycoordinates[400] = {};
+
 
 void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
 void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]);
@@ -36,9 +39,9 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
 }
 
 int neighbor[3][3] = {
-    {1, 0, 1},
     {0, 1, 0},
-    {1, 0, 1}
+    {1, 1, 1},
+    {0, 1, 0}
 };
 
 int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
@@ -89,7 +92,7 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   //overflow fix pls
 
-  int frameSize = 7;
+  int frameSize = 11;
   int radius = frameSize/2;
 
   //Loop throug pixels
@@ -122,6 +125,8 @@ void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
       }
     }
     //Save coordinates
+    xcoordinates[cellCount] = x;
+    ycoordinates[cellCount] = y;
     cellCount++;
     printf("%i [ %i, %i ]\n",cellCount,x,y);
 
@@ -164,6 +169,20 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
       }
     }
   }
+
+
+  //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
+  for (int i = 0; i < 400; i++){
+    if (xcoordinates[i]!=0){
+      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
+
+      for (int j = -10; j <= 10; j++){
+        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+      }
+    }
+  }
+    
 }
 
 
