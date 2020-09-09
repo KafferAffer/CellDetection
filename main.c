@@ -8,6 +8,12 @@
 #include <stdio.h>
 #include "cbmp.h"
 
+int cellCount = 0;
+
+void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
+void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]);
+
+
 //Declaring the array to store the image (unsigned char = unsigned 8 bit)
 unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned char work_image[BMP_WIDTH][BMP_HEIGTH];
@@ -59,15 +65,90 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
     }
   }
 
+  int checkbox = 0;
   //Loop throug pixels
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
       if(work_image[x][y]==2){
+        checkbox = 1;
         work_image[x][y]=0;
       }
     }
   }
+  if (checkbox == 1){
+    frameloop(work_image);
+  }
 }
+
+void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
+  //overflow fix pls
+
+  int frameSize = 7;
+  int radius = frameSize/2;
+
+  //Loop throug pixels
+  if(work_image[x][y]==1){
+    //check frame
+    //top and buttom
+    for (int i = x-radius; i <= x+radius; i++){
+      //top framepoint = (i, y-(radius))
+      if(work_image[i][y-(radius)]==1){
+        //printf("bye");
+        return;
+      }
+      //buttom framep. = (i, y+(radius))
+      if(work_image[i][y+(radius)]==1){
+        //printf("bye");
+        return;
+      }
+    }
+    //sides
+    for (int i = y-radius+1; i <= y+radius-1; i++){
+      //left framepoint = (x-radius,i)
+      if(work_image[x-radius][i]==1){
+        //printf("bye");
+        return;
+      }
+      //rig. framepoint = (x+radius,i)
+      if(work_image[x+radius][i]==1){
+        //printf("bye");
+        return;
+      }
+    }
+    //Save coordinates
+    cellCount++;
+    printf("%i [ %i, %i ]\n",cellCount,x,y);
+
+
+    //Fill frame
+    for (int i = x-radius+1; i <= x+radius-1; i++){
+      for (int j = y-radius+1; j <= y+radius-1; j++){
+        work_image[i][j] = 0;
+      }
+    }
+  }
+   
+}
+
+int picCount = 0;
+void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      tryToFrame(work_image,x,y);
+    }
+  }
+  //Make output image
+  workToOutput(work_image,output_image);
+
+  //Save image to file
+  char name[20];
+  sprintf(name, "testOutput_%i.bmp", picCount);
+  picCount++;
+  write_bitmap(output_image, name);
+  erodePicture(work_image);
+}
+
+
 
 void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
   for (int x = 0; x < BMP_WIDTH; x++){
@@ -78,6 +159,8 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
     }
   }
 }
+
+
 
 //Main function
 int main(int argc, char** argv)
@@ -105,18 +188,9 @@ int main(int argc, char** argv)
   workToOutput(work_image,output_image);
   write_bitmap(output_image, "startOutput.bmp");
 
-  for(int i = 0; i<10; i++){
-    //Erode
-    erodePicture(work_image);
+  //Erode
+  erodePicture(work_image);
 
-    //Make output image
-    workToOutput(work_image,output_image);
-
-    //Save image to file
-    char name[20];
-    sprintf(name, "testOutput_%i.bmp", i);
-    write_bitmap(output_image, name);
-  }
   
 
   printf("Done!\n");
