@@ -29,6 +29,46 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
   }
 }
 
+int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
+  //Check left
+  if((x-1)<0 || work_image[x-1][y] == 0){
+    return 0;
+  }
+  if((x+1)>=BMP_WIDTH || work_image[x+1][y] == 0){
+    return 0;
+  }
+  if((y-1)<0 || work_image[x][y-1] == 0){
+    return 0;
+  }
+  if((y+1)>=BMP_HEIGTH || work_image[x][y+1] == 0){
+    return 0;
+  }
+  return 1;
+}
+
+void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+
+  //Loop throug pixels
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      if(work_image[x][y]==1){
+        if(checkNeighbor(work_image,x,y) == 0){
+          work_image[x][y]=2;
+        }
+      }
+    }
+  }
+
+  //Loop throug pixels
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      if(work_image[x][y]==2){
+        work_image[x][y]=0;
+      }
+    }
+  }
+}
+
 void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
@@ -62,11 +102,22 @@ int main(int argc, char** argv)
   //Run binary
   colorToBinary(input_image,work_image);
 
-  //Make output image
   workToOutput(work_image,output_image);
+  write_bitmap(output_image, "startOutput.bmp");
 
-  //Save image to file
-  write_bitmap(output_image, argv[2]);
+  for(int i = 0; i<10; i++){
+    //Erode
+    erodePicture(work_image);
+
+    //Make output image
+    workToOutput(work_image,output_image);
+
+    //Save image to file
+    char name[20];
+    sprintf(name, "testOutput_%i.bmp", i);
+    write_bitmap(output_image, name);
+  }
+  
 
   printf("Done!\n");
   return 0;
