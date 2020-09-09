@@ -8,40 +8,76 @@
 #include <stdio.h>
 #include "cbmp.h"
 
-//Function to invert pixels of an image (negative)
-void invert(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
-  for (int x = 0; x < BMP_WIDTH; x++)
-  {
-    for (int y = 0; y < BMP_HEIGTH; y++)
-    {
-      for (int c = 0; c < BMP_CHANNELS; c++)
-      {
-      output_image[x][y][c] = 255 - input_image[x][y][c];
+//Declaring the array to store the image (unsigned char = unsigned 8 bit)
+unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+unsigned char work_image[BMP_WIDTH][BMP_HEIGTH];
+unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+
+void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      int r = input_image[x][y][0];
+      int g = input_image[x][y][1];
+      int b = input_image[x][y][2];
+      int gray = 0.2126*r + 0.7152*g + 0.0722*b;
+        if(gray > 90){
+          work_image[x][y] = 1;
+        }else{
+          work_image[x][y] = 0;
+        }
+    }
+  }
+}
+
+int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
+  //Check left
+  if((x-1)<0 || work_image[x-1][y] == 0){
+    return 0;
+  }
+  if((x+1)>=BMP_WIDTH || work_image[x+1][y] == 0){
+    return 0;
+  }
+  if((y-1)<0 || work_image[x][y-1] == 0){
+    return 0;
+  }
+  if((y+1)>=BMP_HEIGTH || work_image[x][y+1] == 0){
+    return 0;
+  }
+  return 1;
+}
+
+void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+
+  //Loop throug pixels
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      if(work_image[x][y]==1){
+        if(checkNeighbor(work_image,x,y) == 0){
+          work_image[x][y]=2;
+        }
+      }
+    }
+  }
+
+  //Loop throug pixels
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      if(work_image[x][y]==2){
+        work_image[x][y]=0;
       }
     }
   }
 }
 
-void binary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
-	  for (int x = 0; x < BMP_WIDTH; x++)
-	  {
-	    for (int y = 0; y < BMP_HEIGTH; y++)
-	    {
-	      for (int c = 0; c < BMP_CHANNELS; c++)
-	      {
-	    	  if(input_image[x][y][c] > 100){
-	    		  output_image[x][y][c] = 255;
-	    	  }else{
-	    		  output_image[x][y][c] = 0;
-	    	  }
-	      }
-	    }
-	  }
-	}
-
-  //Declaring the array to store the image (unsigned char = unsigned 8 bit)
-  unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-  unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      for(int c = 0; c<BMP_CHANNELS; c++){
+        output_image[x][y][c] = 255*work_image[x][y];
+      }
+    }
+  }
+}
 
 //Main function
 int main(int argc, char** argv)
@@ -63,12 +99,30 @@ int main(int argc, char** argv)
   //Load image from file
   read_bitmap(argv[1], input_image);
 
-  //Run inversion
-  binary(input_image,output_image);
+  //Run binary
+  colorToBinary(input_image,work_image);
 
-  //Save image to file
-  write_bitmap(output_image, argv[2]);
+  workToOutput(work_image,output_image);
+  write_bitmap(output_image, "startOutput.bmp");
+
+  for(int i = 0; i<10; i++){
+    //Erode
+    erodePicture(work_image);
+
+    //Make output image
+    workToOutput(work_image,output_image);
+
+    //Save image to file
+    char name[20];
+    sprintf(name, "testOutput_%i.bmp", i);
+    write_bitmap(output_image, name);
+  }
+  
 
   printf("Done!\n");
   return 0;
 }
+
+
+
+
