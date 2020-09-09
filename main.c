@@ -185,6 +185,35 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
     
 }
 
+void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      for(int c = 0; c<BMP_CHANNELS; c++){
+        output_image[x][y][c] = input_image[x][y][c];
+      }
+    }
+  }
+
+
+  //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
+  for (int i = 0; i < 400; i++){
+    if (xcoordinates[i]!=0){
+      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
+
+      for (int j = -10; j <= 10; j++){
+        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+
+        output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
+
+        output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+      }
+    }
+  }
+}
+
 
 
 //Main function
@@ -216,6 +245,11 @@ int main(int argc, char** argv)
   //Erode
   erodePicture(work_image);
 
+  printf("Done working\n");
+
+  // create output
+  createOutputPic(input_image,output_image);
+  write_bitmap(output_image, argv[2]);
   
 
   printf("Done!\n");
