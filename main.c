@@ -29,19 +29,25 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
   }
 }
 
+int neighbor[3][3] = {
+    {1, 0, 1},
+    {0, 1, 0},
+    {1, 0, 1}
+};
+
 int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
-  //Check left
-  if((x-1)<0 || work_image[x-1][y] == 0){
-    return 0;
-  }
-  if((x+1)>=BMP_WIDTH || work_image[x+1][y] == 0){
-    return 0;
-  }
-  if((y-1)<0 || work_image[x][y-1] == 0){
-    return 0;
-  }
-  if((y+1)>=BMP_HEIGTH || work_image[x][y+1] == 0){
-    return 0;
+  for(int xc = 0; xc<3; xc++){
+    for(int yc = 0; yc<3; yc++){
+      if(
+        (x+xc-1)<0 ||
+        (x+xc-1)>=BMP_WIDTH ||
+        (y+yc-1)<0 ||
+        (y+yc-1)>=BMP_HEIGTH ||
+        ((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0))
+      ){
+        return 0;
+      }
+    }
   }
   return 1;
 }
@@ -122,7 +128,5 @@ int main(int argc, char** argv)
   printf("Done!\n");
   return 0;
 }
-
-
 
 
