@@ -8,40 +8,36 @@
 #include <stdio.h>
 #include "cbmp.h"
 
-//Function to invert pixels of an image (negative)
-void invert(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
-  for (int x = 0; x < BMP_WIDTH; x++)
-  {
-    for (int y = 0; y < BMP_HEIGTH; y++)
-    {
-      for (int c = 0; c < BMP_CHANNELS; c++)
-      {
-      output_image[x][y][c] = 255 - input_image[x][y][c];
-      }
+//Declaring the array to store the image (unsigned char = unsigned 8 bit)
+unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+unsigned char work_image[BMP_WIDTH][BMP_HEIGTH];
+unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+
+void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      int r = input_image[x][y][0];
+      int g = input_image[x][y][1];
+      int b = input_image[x][y][2];
+      int gray = 0.2126*r + 0.7152*g + 0.0722*b;
+        if(gray > 90){
+          work_image[x][y] = 1;
+        }else{
+          work_image[x][y] = 0;
+        }
     }
   }
 }
 
-void binary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
-	  for (int x = 0; x < BMP_WIDTH; x++)
-	  {
-	    for (int y = 0; y < BMP_HEIGTH; y++)
-	    {
-	      for (int c = 0; c < BMP_CHANNELS; c++)
-	      {
-	    	  if(input_image[x][y][c] > 100){
-	    		  output_image[x][y][c] = 255;
-	    	  }else{
-	    		  output_image[x][y][c] = 0;
-	    	  }
-	      }
-	    }
-	  }
-	}
-
-  //Declaring the array to store the image (unsigned char = unsigned 8 bit)
-  unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-  unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
+  for (int x = 0; x < BMP_WIDTH; x++){
+    for (int y = 0; y < BMP_HEIGTH; y++){
+      for(int c = 0; c<BMP_CHANNELS; c++){
+        output_image[x][y][c] = 255*work_image[x][y];
+      }
+    }
+  }
+}
 
 //Main function
 int main(int argc, char** argv)
@@ -63,8 +59,11 @@ int main(int argc, char** argv)
   //Load image from file
   read_bitmap(argv[1], input_image);
 
-  //Run inversion
-  binary(input_image,output_image);
+  //Run binary
+  colorToBinary(input_image,work_image);
+
+  //Make output image
+  workToOutput(work_image,output_image);
 
   //Save image to file
   write_bitmap(output_image, argv[2]);
@@ -72,3 +71,7 @@ int main(int argc, char** argv)
   printf("Done!\n");
   return 0;
 }
+
+
+
+
