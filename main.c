@@ -51,9 +51,12 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
         (x+xc-1)<0 ||
         (x+xc-1)>=BMP_WIDTH ||
         (y+yc-1)<0 ||
-        (y+yc-1)>=BMP_HEIGTH ||
-        ((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0))
+        (y+yc-1)>=BMP_HEIGTH
+        
       ){
+        break;
+      }
+      if((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0)){
         return 0;
       }
     }
@@ -172,13 +175,20 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
 
 
   //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
-  for (int i = 0; i < 400; i++){
-    if (xcoordinates[i]!=0){
-      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
+  for (int i = 0; i < cellCount; i++){
+    if (1 == 1){
 
       for (int j = -10; j <= 10; j++){
-        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+        if(xcoordinates[i]+j >= 0 && xcoordinates[i]+j < BMP_WIDTH){
+          output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
+        }
+        if(ycoordinates[i]+j >= 0 && ycoordinates[i]+j < BMP_HEIGTH){
+          output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+        }
       }
     }
   }
@@ -195,20 +205,20 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
   }
 
 
-  //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
-  for (int i = 0; i < 400; i++){
-    if (xcoordinates[i]!=0){
-      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
+  for (int i = 0; i < cellCount; i++){
+    if (1 == 1){
 
       for (int j = -10; j <= 10; j++){
-        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
-
-        output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
-
-        output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+        if(xcoordinates[i]+j >= 0 && xcoordinates[i]+j < BMP_WIDTH){
+          output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
+        }
+        if(ycoordinates[i]+j >= 0 && ycoordinates[i]+j < BMP_HEIGTH){
+          output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+        }
       }
     }
   }
