@@ -22,6 +22,7 @@ unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned char work_image[BMP_WIDTH][BMP_HEIGTH];
 unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 
+//Function that converts the colorful 3d array to a 2d integer array filled with 1's and zeros.
 void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
@@ -43,7 +44,7 @@ int neighbor[3][3] = {
     {1, 1, 1},
     {0, 1, 0}
 };
-
+//Checks a certain point (x,y) to see if it fits the pattern shown above
 int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   for(int xc = 0; xc<3; xc++){
     for(int yc = 0; yc<3; yc++){
