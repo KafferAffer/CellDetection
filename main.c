@@ -92,7 +92,7 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   //overflow fix pls
 
-  int frameSize = 11;
+  int frameSize = 3;
   int radius = frameSize/2;
 
   //Loop throug pixels
