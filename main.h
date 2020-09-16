@@ -23,4 +23,4 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
 void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], char * outputname);
 
 //Runs the actual algorithm
-int detectCells(int argc, char** argv);
+int detectCells(int argc, char** argv, int inframesize, int inthreshhold);
