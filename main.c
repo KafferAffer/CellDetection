@@ -88,7 +88,7 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   //overflow fix pls
 
-  int frameSize = 17;
+  int frameSize = 11;
   int radius = frameSize/2;
 
   //Loop throug pixels
@@ -124,7 +124,7 @@ void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
     xcoordinates[cellCount] = x;
     ycoordinates[cellCount] = y;
     cellCount++;
-    printf("%i [ %i, %i ]\n",cellCount,x,y);
+    //printf("%i [ %i, %i ]\n",cellCount,x,y); //print coordinates
 
 
     //Fill frame
@@ -244,6 +244,8 @@ int detectCells(int argc, char** argv)
   createOutputPic(input_image,output_image, argv[2]);
 
   printf("Output image made!\n");
+
+  printf("Total cellCount: %i ", cellCount);
   return 0;
 }
 
