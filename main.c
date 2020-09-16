@@ -92,7 +92,7 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   //overflow fix pls
 
-  int frameSize = 17;
+  int frameSize = 11;
   int radius = frameSize/2;
 
   //Loop throug pixels
@@ -237,7 +237,7 @@ int main(int argc, char** argv)
   //Checking that 2 arguments are passed
   if (argc != 3)
   {
-      fprintf(stderr, "Usage: %s <output file path> <output file path>\n", argv[0]);
+      fprintf(stderr, "Usage: %s <input file path> <output file path>\n", argv[0]);
       exit(1);
   }
 
