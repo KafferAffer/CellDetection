@@ -9,6 +9,9 @@ int cellCount = 0;
 int xcoordinates[400] = {};
 int ycoordinates[400] = {};
 
+int frameSize;
+int threshhold;
+
 
 //Declaring the array to store the image (unsigned char = unsigned 8 bit)
 unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
@@ -22,7 +25,7 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
       int g = input_image[x][y][1];
       int b = input_image[x][y][2];
       int gray = 0.2126*r + 0.7152*g + 0.0722*b;
-        if(gray > 90){ //TH
+        if(gray > threshhold){ //TH
           work_image[x][y] = 1;
         }else{
           work_image[x][y] = 0;
@@ -90,9 +93,6 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 }
 
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
-  //overflow fix pls
-
-  int frameSize = 3;
   int radius = frameSize/2;
 
   //Loop throug pixels
@@ -228,8 +228,10 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
 
 
 //Main function
-int detectCells(int argc, char** argv)
+int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
 {
+  frameSize = inframesize;
+  threshhold = inthreshhold;
   //Load image from file
   read_bitmap(argv[1], input_image);
 

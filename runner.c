@@ -11,15 +11,23 @@ int main(int argc, char** argv) {
 	//argv[2] is the second command line argument (output image)
 
 	//Checking that 2 arguments are passed
-	if (argc != 3)
+	if (argc < 3)
 	{
-	    fprintf(stderr, "Usage: %s <output file path> <output file path>\n", argv[0]);
+	    fprintf(stderr, "Usage: %s <output file path> <output file path> [framesize] [threshhold]\n", argv[0]);
 	    exit(1);
+	}
+
+	int framesize = 11;
+	int threshhold = 90;
+
+	if (argc = 5){
+		framesize = atoi(argv[3]);
+		threshhold = atoi(argv[4]);
 	}
 
 	printf("Running program - a turtle made it to the water - V1.0\n");
 	//Detect the cells and make file
-	detectCells(argc, argv);
+	detectCells(argc, argv, framesize, threshhold);
 	
 	return 0;
 }
