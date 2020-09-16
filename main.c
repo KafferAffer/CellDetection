@@ -1,20 +1,13 @@
-//To compile (linux/mac): gcc cbmp.c main.c -o main.out -std=c99
-//To run (linux/mac): ./main.out example.bmp example_inv.bmp
 
-//To compile (win): gcc cbmp.c main.c -o main.exe -std=c99
-//To run (win): main.exe example.bmp example_inv.bmp
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "cbmp.h"
+#include "main.h"
 
 int cellCount = 0;
 int xcoordinates[400] = {};
 int ycoordinates[400] = {};
-
-
-void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
-void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]);
 
 
 //Declaring the array to store the image (unsigned char = unsigned 8 bit)
@@ -38,12 +31,15 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
   }
 }
 
+//The pattern used to check neighbors
 int neighbor[3][3] = {
     {0, 1, 0},
     {1, 1, 1},
     {0, 1, 0}
 };
 
+
+//Checks a certain point (x,y) to see if it fits the pattern shown above
 int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   for(int xc = 0; xc<3; xc++){
     for(int yc = 0; yc<3; yc++){
@@ -195,7 +191,7 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
     
 }
 
-void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]){
+void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], char * outputname){
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
       for(int c = 0; c<BMP_CHANNELS; c++){
@@ -222,27 +218,14 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
       }
     }
   }
+  write_bitmap(output_image, outputname);
 }
 
 
 
 //Main function
-int main(int argc, char** argv)
+int detectCells(int argc, char** argv)
 {
-  //argc counts how may arguments are passed
-  //argv[0] is a string with the name of the program
-  //argv[1] is the first command line argument (input image)
-  //argv[2] is the second command line argument (output image)
-
-  //Checking that 2 arguments are passed
-  if (argc != 3)
-  {
-      fprintf(stderr, "Usage: %s <input file path> <output file path>\n", argv[0]);
-      exit(1);
-  }
-
-  printf("Example program - 02132 - A1\n");
-
   //Load image from file
   read_bitmap(argv[1], input_image);
 
@@ -255,14 +238,12 @@ int main(int argc, char** argv)
   //Erode
   erodePicture(work_image);
 
-  printf("Done working\n");
+  printf("Done detecting\n");
 
   // create output
-  createOutputPic(input_image,output_image);
-  write_bitmap(output_image, argv[2]);
-  
+  createOutputPic(input_image,output_image, argv[2]);
 
-  printf("Done!\n");
+  printf("Output image made!\n");
   return 0;
 }
 
