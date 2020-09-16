@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 		threshhold = atoi(argv[4]);
 	}
 
-	printf("Running program - a turtle made it to the water - V1.0\n");
+	//printf("Running program - a turtle made it to the water - V1.0\n");
 	//Detect the cells and make file
 	detectCells(argc, argv, framesize, threshhold);
 	

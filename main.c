@@ -244,12 +244,12 @@ int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
   //Erode
   erodePicture(work_image);
 
-  printf("Done detecting\n");
+  //printf("Done detecting\n");
 
   // create output
   createOutputPic(input_image,output_image, argv[2]);
 
-  printf("Output image made!\n");
+  //printf("Output image made!\n");
 
   printf("Total cellCount: %i ", cellCount);
   return 0;
