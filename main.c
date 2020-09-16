@@ -22,7 +22,7 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
       int g = input_image[x][y][1];
       int b = input_image[x][y][2];
       int gray = 0.2126*r + 0.7152*g + 0.0722*b;
-        if(gray > 90){
+        if(gray > 110){ //TH
           work_image[x][y] = 1;
         }else{
           work_image[x][y] = 0;
