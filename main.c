@@ -198,8 +198,7 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
 
 
   //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
-  for (int i = 0; i < 400; i++){
-    if (xcoordinates[i]!=0){
+  for (int i = 0; i < cellCount; i++){
       output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
 
       for (int j = -10; j <= 10; j++){
@@ -212,7 +211,6 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
         output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
         output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
       }
-    }
   }
   write_bitmap(output_image, outputname);
 }
