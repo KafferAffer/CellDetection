@@ -178,17 +178,13 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
 
 
   //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
-  for (int i = 0; i < 400; i++){
-    if (xcoordinates[i]!=0){
+  for (int i = 0; i < cellCount; i++){
       output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
-
       for (int j = -10; j <= 10; j++){
         output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
         output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
       }
     }
-  }
-    
 }
 
 void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], char * outputname){
