@@ -15,7 +15,6 @@ unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned char work_image[BMP_WIDTH][BMP_HEIGTH];
 unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 
-//Function that converts the colorful 3d array to a 2d integer array filled with 1's and zeros.
 void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
@@ -48,12 +47,9 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
         (x+xc-1)<0 ||
         (x+xc-1)>=BMP_WIDTH ||
         (y+yc-1)<0 ||
-        (y+yc-1)>=BMP_HEIGTH
-        
+        (y+yc-1)>=BMP_HEIGTH ||
+        ((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0))
       ){
-        break;
-      }
-      if((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0)){
         return 0;
       }
     }
@@ -64,8 +60,8 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
 void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 
   //Loop throug pixels
-  for (int x = 0; x < BMP_WIDTH; x++){
-    for (int y = 0; y < BMP_HEIGTH; y++){
+  for (int x = 0; x < BMP_WIDTH; x++){//-1??
+    for (int y = 0; y < BMP_HEIGTH; y++){//-1??
       if(work_image[x][y]==1){
         if(checkNeighbor(work_image,x,y) == 0){
           work_image[x][y]=2;
@@ -92,7 +88,7 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   //overflow fix pls
 
-  int frameSize = 11;
+  int frameSize = 17;
   int radius = frameSize/2;
 
   //Loop throug pixels
@@ -151,9 +147,19 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   //Make output image
   workToOutput(work_image,output_image);
 
+  //fixed length of num
+  char * intPrefix = "";
+  int intWantedLength = 3;
+  if (picCount < 100){
+    intPrefix ="0";
+  }
+  if (picCount < 10){
+    intPrefix ="00";
+  }
+
   //Save image to file
   char name[20];
-  sprintf(name, "testOutput_%i.bmp", picCount);
+  sprintf(name, "testOutput_%s%i.bmp", intPrefix, picCount);
   picCount++;
   write_bitmap(output_image, name);
   erodePicture(work_image);
@@ -172,20 +178,13 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
 
 
   //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
-  for (int i = 0; i < cellCount; i++){
-    if (1 == 1){
+  for (int i = 0; i < 400; i++){
+    if (xcoordinates[i]!=0){
+      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
 
       for (int j = -10; j <= 10; j++){
-        if(xcoordinates[i]+j >= 0 && xcoordinates[i]+j < BMP_WIDTH){
-          output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
-          output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
-          output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
-        }
-        if(ycoordinates[i]+j >= 0 && ycoordinates[i]+j < BMP_HEIGTH){
-          output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
-          output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
-          output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
-        }
+        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
       }
     }
   }
@@ -202,20 +201,20 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
   }
 
 
-  for (int i = 0; i < cellCount; i++){
-    if (1 == 1){
+  //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
+  for (int i = 0; i < 400; i++){
+    if (xcoordinates[i]!=0){
+      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
 
       for (int j = -10; j <= 10; j++){
-        if(xcoordinates[i]+j >= 0 && xcoordinates[i]+j < BMP_WIDTH){
-          output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
-          output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
-          output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
-        }
-        if(ycoordinates[i]+j >= 0 && ycoordinates[i]+j < BMP_HEIGTH){
-          output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
-          output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
-          output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
-        }
+        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+
+        output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
+
+        output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
+        output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
       }
     }
   }
