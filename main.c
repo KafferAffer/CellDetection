@@ -100,10 +100,16 @@ void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
     //check frame
     //top and buttom
     for (int i = x-radius; i <= x+radius; i++){
+      if(0>y-(radius) || y-(radius)>=BMP_HEIGTH){
+        break;
+      }
       //top framepoint = (i, y-(radius))
       if(work_image[i][y-(radius)]==1){
         //printf("bye");
         return;
+      }
+      if(0>y+(radius) || y+(radius)>=BMP_HEIGTH){
+        break;
       }
       //buttom framep. = (i, y+(radius))
       if(work_image[i][y+(radius)]==1){
@@ -113,10 +119,16 @@ void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
     }
     //sides
     for (int i = y-radius+1; i <= y+radius-1; i++){
+      if(0>x-(radius) || x-(radius)>=BMP_WIDTH){
+        break;
+      }
       //left framepoint = (x-radius,i)
       if(work_image[x-radius][i]==1){
         //printf("bye");
         return;
+      }
+      if(0>x+(radius) || x+(radius)>=BMP_WIDTH){
+        break;
       }
       //rig. framepoint = (x+radius,i)
       if(work_image[x+radius][i]==1){
@@ -133,7 +145,13 @@ void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
 
     //Fill frame
     for (int i = x-radius+1; i <= x+radius-1; i++){
+      if(i<0||i>=BMP_WIDTH){
+        break;
+      }
       for (int j = y-radius+1; j <= y+radius-1; j++){
+        if(j<0||j>=BMP_HEIGTH){
+          break;
+        }
         work_image[i][j] = 0;
       }
     }
@@ -148,6 +166,8 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
       tryToFrame(work_image,x,y);
     }
   }
+
+  printf("after framing\n");
   //Make output image
   workToOutput(work_image,output_image);
 
