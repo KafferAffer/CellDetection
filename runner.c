@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 	int framesize = 11;
 	int threshhold = 90;
 
-	if (argc = 5){
+	if (argc >= 5){
 		framesize = atoi(argv[3]);
 		threshhold = atoi(argv[4]);
 	}
