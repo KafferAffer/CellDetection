@@ -43,11 +43,15 @@ int neighbor[3][3] = {
 int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
   for(int xc = 0; xc<3; xc++){
     for(int yc = 0; yc<3; yc++){
-      if(
+      if
+      (
         (x+xc-1)<0 ||
         (x+xc-1)>=BMP_WIDTH ||
         (y+yc-1)<0 ||
-        (y+yc-1)>=BMP_HEIGTH ||
+        (y+yc-1)>=BMP_HEIGTH
+      ){
+        break;
+      }else if(
         ((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0))
       ){
         return 0;
@@ -176,15 +180,22 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
     }
   }
 
-
-  //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
   for (int i = 0; i < cellCount; i++){
       output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
+
       for (int j = -10; j <= 10; j++){
-        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+        if(0<=xcoordinates[i]+j&&xcoordinates[i]+j<BMP_WIDTH){
+          output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
+        }
+        if(0<=ycoordinates[i]+j&&ycoordinates[i]+j<BMP_HEIGTH){
+          output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+        }
       }
-    }
+  }
 }
 
 void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], char * outputname){
@@ -197,19 +208,18 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
   }
 
 
-  //output_image[xcoordinates[0]][ycoordinates[0]][0] = 255;
   for (int i = 0; i < cellCount; i++){
-      output_image[xcoordinates[i]][ycoordinates[i]][0] = 255;
-
       for (int j = -10; j <= 10; j++){
-        output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
-
-        output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
-
-        output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
-        output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+        if(0<=xcoordinates[i]+j&&xcoordinates[i]+j<BMP_WIDTH){
+          output_image[xcoordinates[i]+j][ycoordinates[i]][0] = 255;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][1] = 0;
+          output_image[xcoordinates[i]+j][ycoordinates[i]][2] = 0;
+        }
+        if(0<=ycoordinates[i]+j&&ycoordinates[i]+j<BMP_HEIGTH){
+          output_image[xcoordinates[i]][ycoordinates[i]+j][0] = 255;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][1] = 0;
+          output_image[xcoordinates[i]][ycoordinates[i]+j][2] = 0;
+        }
       }
   }
   write_bitmap(output_image, outputname);
