@@ -1,5 +1,6 @@
 //To compile (win): gcc runner.c cbmp.c main.c -o main.exe -std=c99
-//To run (win): main.exe example.bmp example_inv.bmp
+//To run (win): main.exe example.bmp example_inv.bmp [framesize] [threshold]
+//framesize and threshhold isnt required
 #include <stdlib.h>
 #include <stdio.h>
 #include "main.h"

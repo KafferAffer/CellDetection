@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdbool.h> 
 #include "cbmp.h"
 #include "main.h"
 
@@ -66,7 +67,7 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
   return 1;
 }
 
-void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   //Time test for erosion loop
   clock_t start, end;
   double cpu_time_used;
@@ -97,11 +98,12 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   //End time test
   end = clock();
   cpu_time_used = end-start;
-  fprintf(fptr,"Time on erosion: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+  if(fptr!=NULL)fprintf(fptr,"Time on erosion: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
 
   if (checkbox == 1){
-    frameloop(work_image);
+    return true;
   }
+  return false;
 }
 
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
@@ -190,9 +192,7 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   //End time test
   end = clock();
   cpu_time_used = end-start;
-  fprintf(fptr,"Time on fram loop: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
-
-  erodePicture(work_image);
+  if(fptr!=NULL)fprintf(fptr,"Time on fram loop: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
 }
 
 
@@ -257,7 +257,7 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
 int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
 {
   fptr = fopen("timeTest.txt", "w+");
-  
+
   //Time test for it all
   clock_t start, end;
   double cpu_time_used;
@@ -275,7 +275,9 @@ int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
   write_bitmap(output_image, "startOutput.bmp");
 
   //Erode
-  erodePicture(work_image);
+  while(erodePicture(work_image)){
+    frameloop(work_image);
+  }
 
   //printf("Done detecting\n");
 
@@ -289,7 +291,7 @@ int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
   //End time test
   end = clock();
   cpu_time_used = end-start;
-  fprintf(fptr, "Total time: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+  if(fptr!=NULL)fprintf(fptr, "Total time: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
 
   return 0;
 }
