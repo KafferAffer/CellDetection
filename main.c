@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "cbmp.h"
 #include "main.h"
 
@@ -11,6 +12,7 @@ int ycoordinates[400] = {};
 
 int frameSize;
 int threshhold;
+FILE *fptr;
 
 
 //Declaring the array to store the image (unsigned char = unsigned 8 bit)
@@ -65,6 +67,10 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
 }
 
 void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+  //Time test for erosion loop
+  clock_t start, end;
+  double cpu_time_used;
+  start = clock();
 
   //Loop throug pixels
   for (int x = 0; x < BMP_WIDTH; x++){//-1??
@@ -87,6 +93,12 @@ void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
       }
     }
   }
+
+  //End time test
+  end = clock();
+  cpu_time_used = end-start;
+  fprintf(fptr,"Time on erosion: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+
   if (checkbox == 1){
     frameloop(work_image);
   }
@@ -145,6 +157,11 @@ void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
 
 int picCount = 0;
 void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+  //Time test for frame loop
+  clock_t start, end;
+  double cpu_time_used;
+  start = clock();
+
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
       tryToFrame(work_image,x,y);
@@ -169,6 +186,12 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   sprintf(name, "testOutput_%s%i.bmp", intPrefix, picCount);
   picCount++;
   write_bitmap(output_image, name);
+
+  //End time test
+  end = clock();
+  cpu_time_used = end-start;
+  fprintf(fptr,"Time on fram loop: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+
   erodePicture(work_image);
 }
 
@@ -233,6 +256,13 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
 //Main function
 int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
 {
+  fptr = fopen("timeTest.txt", "w+");
+  
+  //Time test for it all
+  clock_t start, end;
+  double cpu_time_used;
+  start = clock();
+
   frameSize = inframesize;
   threshhold = inthreshhold;
   //Load image from file
@@ -255,6 +285,12 @@ int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
   //printf("Output image made!\n");
 
   printf("Total cellCount: %i ", cellCount );
+
+  //End time test
+  end = clock();
+  cpu_time_used = end-start;
+  fprintf(fptr, "Total time: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+
   return 0;
 }
 
