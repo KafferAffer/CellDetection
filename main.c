@@ -254,7 +254,7 @@ int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
 
   //printf("Output image made!\n");
 
-  printf("Total cellCount: %i ", cellCount);
+  printf("Total cellCount: %i ", cellCount );
   return 0;
 }
 
