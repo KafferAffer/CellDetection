@@ -1,4 +1,5 @@
 #include "cbmp.h"
+#include <stdbool.h> 
 
 //Converts from color to binary
 void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
@@ -8,7 +9,7 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
 int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y);
 
 //removes all pixels that dont fit
-void erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
+bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
 
 //checks if the frame matches at x,y and if so it counts cell and romes everything within the frame
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y);
