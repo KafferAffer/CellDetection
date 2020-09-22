@@ -44,6 +44,18 @@ void printPassed(char * function, char * test){
 	printf("%s passed test: %s!\n", function, test);
 }
 
+int countWork(){
+	int count = 0;
+	for(int x = 0; x<BMP_WIDTH;x++){
+		for(int y = 0; y<BMP_HEIGTH;y++){
+			if(work_image[x][y]==1){
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 void testWorkToOutput(){
 
 
@@ -75,18 +87,18 @@ void testWorkToOutput(){
 }
 
 void testErosion(){
-
+	resetArrays();
 	//Empty array is supposed to erode nothing
 	if(erodePicture(work_image)){
 		printFailed("erodePicture","1");
 	}else{
 		printPassed("erodePicture","1");
 	}
-
+	resetArrays();
 	//if there is only on pixel left on screen it should be removed by erode *CAN BE IMPROVED WITH RANDOM POSITION BUT 10 10 FOR NOW
 	work_image[10][10] = 1;
 	erodePicture(work_image);
-	if(work_image[10][10] = 1){
+	if(work_image[10][10] == 1){
 		printFailed("erodePicture","2");
 	}else{
 		printPassed("erodePicture","2");
@@ -103,5 +115,21 @@ void testErosion(){
 		printFailed("erodePicture","3");
 	}else{
 		printPassed("erodePicture","3");
+	}
+
+	//After an erodePicture there should be fewer dots
+	resetArrays();
+	for(int i = 0; i<10; i++){
+		for(int j = 0; j<10; j++){
+			work_image[i][j]=1;
+		}
+	}
+	int before = countWork();
+	erodePicture(work_image);
+	int after = countWork();
+	if(after<before){
+		printPassed("erodePicture","4");
+	}else{
+		printFailed("erodePicture","4");
 	}
 }
