@@ -244,19 +244,7 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
   write_bitmap(output_image, outputname);
 }
 
-//The pattern used to check neighbors
-int plusShape[3][3] = {
-    {0, 1, 0},
-    {1, 1, 1},
-    {0, 1, 0}
-};
 
-//The pattern used to check neighbors
-int fullShape[3][3] = {
-    {1, 1, 1},
-    {1, 1, 1},
-    {1, 1, 1}
-};
 
 
 void plusLoop(){

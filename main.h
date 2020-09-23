@@ -1,5 +1,11 @@
 #include "cbmp.h"
-#include <stdbool.h> 
+#include <stdbool.h>
+
+//The pattern used to check neighbors
+static int plusShape[3][3] = {{0, 1, 0},{1, 1, 1},{0, 1, 0}};
+
+//The pattern used to check neighbors
+static int fullShape[3][3] = {{1, 1, 1},{1, 1, 1},{1, 1, 1}};
 
 //Converts from color to binary
 void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
