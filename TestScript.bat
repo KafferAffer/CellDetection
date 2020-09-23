@@ -1,6 +1,6 @@
 ECHO OFF
 gcc runner.c cbmp.c main.c -o main.exe -std=c99
-
+::Runs all with default values for TH and FS
 ECHO Hit Enter to do all easy tests
 PAUSE
 
