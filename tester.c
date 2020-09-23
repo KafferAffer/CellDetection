@@ -15,6 +15,7 @@ void printPassed(char * function, char * test);
 void testWorkToOutput();
 void testErosion();
 void resetArrays();
+void testFraming();
 
 int main(int argc, char** argv){
 	read_bitmap("example.bmp", input_image);
@@ -132,4 +133,13 @@ void testErosion(){
 	}else{
 		printFailed("erodePicture","4");
 	}
+}
+
+void testFraming(){
+	resetArrays();
+	//If there is a giant horizontal stripe through the world you should remove anything since the frame should never be that large
+	for(i=0;i<BMP_WIDTH;i++){
+		work_image[i][10]=1;
+	}
+	
 }

@@ -6,10 +6,10 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
 
 //Checks the neighbors of the coordinate x,y to see if the match a given pattern
 	//returns 0 if it doesnt fit returns 1 if it fits
-int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y);
+int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y, int neighborArray[3][3]);
 
 //removes all pixels that dont fit
-bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]);
+bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int neighborArray[3][3]);
 
 //checks if the frame matches at x,y and if so it counts cell and romes everything within the frame
 void tryToFrame(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y);
@@ -25,3 +25,7 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
 
 //Runs the actual algorithm
 int detectCells(int argc, char** argv, int inframesize, int inthreshhold);
+
+//To switch between x and plus shape
+void plusLoop();
+void fullLoop();

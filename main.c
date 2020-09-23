@@ -37,16 +37,9 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
   }
 }
 
-//The pattern used to check neighbors
-int neighbor[3][3] = {
-    {0, 1, 0},
-    {1, 1, 1},
-    {0, 1, 0}
-};
-
 
 //Checks a certain point (x,y) to see if it fits the pattern shown above
-int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y){
+int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y, int neighborArray[3][3]){
   for(int xc = 0; xc<3; xc++){
     for(int yc = 0; yc<3; yc++){
       if
@@ -56,9 +49,9 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
         (y+yc-1)<0 ||
         (y+yc-1)>=BMP_HEIGTH
       ){
-        break;
+        continue;
       }else if(
-        ((neighbor[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0))
+        ((neighborArray[xc][yc]==1) && (work_image[x+xc-1][y+yc-1]==0))
       ){
         return 0;
       }
@@ -67,7 +60,7 @@ int checkNeighbor(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int x, int y)
   return 1;
 }
 
-bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
+bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], int neighborArray[3][3]){
   //Time test for erosion loop
   clock_t start, end;
   double cpu_time_used;
@@ -77,7 +70,7 @@ bool erodePicture(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   for (int x = 0; x < BMP_WIDTH; x++){//-1??
     for (int y = 0; y < BMP_HEIGTH; y++){//-1??
       if(work_image[x][y]==1){
-        if(checkNeighbor(work_image,x,y) == 0){
+        if(checkNeighbor(work_image,x,y,neighborArray) == 0){
           work_image[x][y]=2;
         }
       }
@@ -251,6 +244,34 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
   write_bitmap(output_image, outputname);
 }
 
+//The pattern used to check neighbors
+int plusShape[3][3] = {
+    {0, 1, 0},
+    {1, 1, 1},
+    {0, 1, 0}
+};
+
+//The pattern used to check neighbors
+int fullShape[3][3] = {
+    {1, 1, 1},
+    {1, 1, 1},
+    {1, 1, 1}
+};
+
+
+void plusLoop(){
+  if(erodePicture(work_image,plusShape)){
+    frameloop(work_image);
+    fullLoop();
+  }
+}
+
+void fullLoop(){
+  if(erodePicture(work_image,fullShape)){
+    frameloop(work_image);
+    plusLoop();
+  }
+}
 
 
 //Main function
@@ -275,9 +296,7 @@ int detectCells(int argc, char** argv, int inframesize, int inthreshhold)
   write_bitmap(output_image, "startOutput.bmp");
 
   //Erode
-  while(erodePicture(work_image)){
-    frameloop(work_image);
-  }
+  fullLoop();
 
   //printf("Done detecting\n");
 

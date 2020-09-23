@@ -1,0 +1,4 @@
+Both:258
+Plus:253
+Full: 248
+Note: Man kan se en fejl i toppen af skærmen på disse tests da den ikke kunne erode celler i toppen ordentligt, dette er blevet fixet.
