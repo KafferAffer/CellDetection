@@ -1,22 +1,14 @@
-Time on erosion: 7.000000 ms
-Time on fram loop: 42.000000 ms
-Time on erosion: 7.000000 ms
-Time on fram loop: 42.000000 ms
-Time on erosion: 7.000000 ms
-Time on fram loop: 42.000000 ms
-Time on erosion: 6.000000 ms
-Time on fram loop: 43.000000 ms
-Time on erosion: 6.000000 ms
-Time on fram loop: 42.000000 ms
-Time on erosion: 6.000000 ms
-Time on fram loop: 41.000000 ms
 Time on erosion: 5.000000 ms
-Time on fram loop: 41.000000 ms
+Time on fram (Size: 9) loop: 63.000000 ms
 Time on erosion: 4.000000 ms
-Time on fram loop: 41.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram loop: 41.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram loop: 39.000000 ms
+Time on fram (Size: 9) loop: 40.000000 ms
+Time on erosion: 3.000000 ms
+Time on fram (Size: 9) loop: 35.000000 ms
+Time on erosion: 3.000000 ms
+Time on fram (Size: 9) loop: 37.000000 ms
 Time on erosion: 5.000000 ms
-Total time: 827.000000 ms
+Time on fram (Size: 9) loop: 36.000000 ms
+Time on erosion: 3.000000 ms
+Time on fram (Size: 9) loop: 32.000000 ms
+Time on erosion: 4.000000 ms
+Total time: 572.000000 ms

@@ -192,7 +192,7 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   //End time test
   end = clock();
   cpu_time_used = end-start;
-  if(fptr!=NULL)fprintf(fptr,"Time on fram loop: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+  if(fptr!=NULL)fprintf(fptr,"Time on fram (Size: %i) loop: %f ms\n", frameSize, cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
 }
 
 
