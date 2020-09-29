@@ -21,8 +21,9 @@ int main(int argc, char** argv){
 	read_bitmap("example.bmp", input_image);
 	printf("tester testing!\n");
 	testWorkToOutput();
-	resetArrays();
-	testErosion();
+	testErosion(plusShape);
+	testErosion(fullShape);
+	testFraming();
 	return 0;
 }
 
@@ -87,10 +88,10 @@ void testWorkToOutput(){
 	if(check){printPassed("workToOutput","1");}
 }
 
-void testErosion(){
+void testErosion(int neighborArray[3][3]){
 	resetArrays();
 	//Empty array is supposed to erode nothing
-	if(erodePicture(work_image)){
+	if(erodePicture(work_image,neighborArray)){
 		printFailed("erodePicture","1");
 	}else{
 		printPassed("erodePicture","1");
@@ -98,7 +99,7 @@ void testErosion(){
 	resetArrays();
 	//if there is only on pixel left on screen it should be removed by erode *CAN BE IMPROVED WITH RANDOM POSITION BUT 10 10 FOR NOW
 	work_image[10][10] = 1;
-	erodePicture(work_image);
+	erodePicture(work_image,neighborArray);
 	if(work_image[10][10] == 1){
 		printFailed("erodePicture","2");
 	}else{
@@ -111,7 +112,7 @@ void testErosion(){
 			work_image[i][j]=1;
 		}
 	}
-	erodePicture(work_image);
+	erodePicture(work_image,neighborArray);
 	if(work_image[5][5]=0){
 		printFailed("erodePicture","3");
 	}else{
@@ -126,7 +127,7 @@ void testErosion(){
 		}
 	}
 	int before = countWork();
-	erodePicture(work_image);
+	erodePicture(work_image,neighborArray);
 	int after = countWork();
 	if(after<before){
 		printPassed("erodePicture","4");
@@ -138,8 +139,48 @@ void testErosion(){
 void testFraming(){
 	resetArrays();
 	//If there is a giant horizontal stripe through the world you should remove anything since the frame should never be that large
-	for(i=0;i<BMP_WIDTH;i++){
+	for(int i=0;i<BMP_WIDTH;i++){
 		work_image[i][10]=1;
 	}
-	
+	frameloop(work_image);
+	bool ok = true;
+	for(int i=0;i<BMP_WIDTH;i++){
+		if(work_image[i][10] != 1){
+			ok = false;
+		}
+	}
+	if(ok){
+		printPassed("frameLoop","1");
+	}else{
+		printFailed("frameLoop","1");
+	}
+
+	resetArrays();
+	//the same as before but for vertical
+	for(int i=0;i<BMP_HEIGTH;i++){
+		work_image[10][i]=1;
+	}
+	frameloop(work_image);
+	ok = true;
+	for(int i=0;i<BMP_HEIGTH;i++){
+		if(work_image[10][i] != 1){
+			ok = false;
+		}
+	}
+	if(ok){
+		printPassed("frameLoop","2");
+	}else{
+		printFailed("frameLoop","2");
+	}
+
+	resetArrays();
+	//If there is a square in the middle it should be framed
+	work_image[BMP_WIDTH/2][BMP_HEIGTH/2]=1;
+	frameloop(work_image);
+	ok = work_image[BMP_WIDTH/2][BMP_HEIGTH/2]==0;
+	if(ok){
+		printPassed("frameLoop","3");
+	}else{
+		printFailed("frameLoop","3");
+	}
 }
