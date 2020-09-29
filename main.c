@@ -8,8 +8,8 @@
 #include "main.h"
 
 int cellCount = 0;
-int xcoordinates[400] = {};
-int ycoordinates[400] = {};
+int xcoordinates[4000] = {};
+int ycoordinates[4000] = {};
 
 int frameSize = 11;
 int threshhold = 90;
@@ -278,6 +278,8 @@ int detectCells(int argc, char** argv)
   clock_t start, end;
   double cpu_time_used;
   start = clock();
+
+  cellCount = 0;
   
   
   //Load image from file
@@ -299,7 +301,7 @@ int detectCells(int argc, char** argv)
 
   //printf("Output image made!\n");
 
-  printf("Total cellCount: %i ", cellCount );
+  printf("%i", cellCount );
 
   //End time test
   end = clock();
