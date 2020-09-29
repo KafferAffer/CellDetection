@@ -1,1 +1,12 @@
-
+Time on erosion: 3.000000 ms
+Time on fram (Size: 7) loop: 32.000000 ms
+Time on erosion: 3.000000 ms
+Time on fram (Size: 7) loop: 31.000000 ms
+Time on erosion: 3.000000 ms
+Time on fram (Size: 7) loop: 32.000000 ms
+Time on erosion: 3.000000 ms
+Time on fram (Size: 7) loop: 31.000000 ms
+Time on erosion: 4.000000 ms
+Time on fram (Size: 7) loop: 30.000000 ms
+Time on erosion: 3.000000 ms
+Total time: 441.000000 ms

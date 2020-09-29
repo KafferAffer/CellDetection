@@ -8,8 +8,8 @@
 #include "main.h"
 
 int cellCount = 0;
-int xcoordinates[400] = {};
-int ycoordinates[400] = {};
+int xcoordinates[4000] = {};
+int ycoordinates[4000] = {};
 
 int frameSize;
 int threshhold;
