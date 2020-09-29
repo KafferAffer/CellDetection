@@ -299,7 +299,8 @@ int detectCells(int argc, char** argv)
 
   //printf("Output image made!\n");
 
-  printf("Total cellCount: %i ", cellCount );
+  printf("%i ", cellCount );
+  printf("\t");
 
   //End time test
   end = clock();
