@@ -1,21 +1,31 @@
 Time spend on converting to binary: 6.000000 ms
 Time on erosion: 5.000000 ms
+Time on fram (Size: 11) loop: 33.000000 ms
+Time on erosion: 5.000000 ms
 Time on fram (Size: 11) loop: 31.000000 ms
 Time on erosion: 6.000000 ms
 Time on fram (Size: 11) loop: 32.000000 ms
 Time on erosion: 4.000000 ms
 Time on fram (Size: 11) loop: 32.000000 ms
-Time on erosion: 4.000000 ms
+Time on erosion: 5.000000 ms
 Time on fram (Size: 11) loop: 32.000000 ms
 Time on erosion: 3.000000 ms
+Time on fram (Size: 11) loop: 32.000000 ms
+Time on erosion: 5.000000 ms
+Time on fram (Size: 11) loop: 31.000000 ms
+Time on erosion: 4.000000 ms
+Time on fram (Size: 11) loop: 31.000000 ms
+Time on erosion: 4.000000 ms
+Time on fram (Size: 11) loop: 31.000000 ms
+Time on erosion: 4.000000 ms
+Time on fram (Size: 11) loop: 30.000000 ms
+Time on erosion: 4.000000 ms
 Time on fram (Size: 11) loop: 32.000000 ms
 Time on erosion: 3.000000 ms
 Time on fram (Size: 11) loop: 31.000000 ms
 Time on erosion: 4.000000 ms
+Time on fram (Size: 11) loop: 32.000000 ms
+Time on erosion: 3.000000 ms
 Time on fram (Size: 11) loop: 31.000000 ms
-Time on erosion: 3.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
-Time on erosion: 3.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
 Time on erosion: 4.000000 ms
-Total time: 586.000000 ms
+Total time: 767.000000 ms
