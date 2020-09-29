@@ -23,6 +23,7 @@ int main(int argc, char** argv){
 	testWorkToOutput();
 	testErosion(plusShape);
 	testErosion(fullShape);
+	testFraming();
 	return 0;
 }
 
@@ -140,5 +141,46 @@ void testFraming(){
 	//If there is a giant horizontal stripe through the world you should remove anything since the frame should never be that large
 	for(int i=0;i<BMP_WIDTH;i++){
 		work_image[i][10]=1;
+	}
+	frameloop(work_image);
+	bool ok = true;
+	for(int i=0;i<BMP_WIDTH;i++){
+		if(work_image[i][10] != 1){
+			ok = false;
+		}
+	}
+	if(ok){
+		printPassed("frameLoop","1");
+	}else{
+		printFailed("frameLoop","1");
+	}
+
+	resetArrays();
+	//the same as before but for vertical
+	for(int i=0;i<BMP_HEIGTH;i++){
+		work_image[10][i]=1;
+	}
+	frameloop(work_image);
+	ok = true;
+	for(int i=0;i<BMP_HEIGTH;i++){
+		if(work_image[10][i] != 1){
+			ok = false;
+		}
+	}
+	if(ok){
+		printPassed("frameLoop","2");
+	}else{
+		printFailed("frameLoop","2");
+	}
+
+	resetArrays();
+	//If there is a square in the middle it should be framed
+	work_image[BMP_WIDTH/2][BMP_HEIGTH/2]=1;
+	frameloop(work_image);
+	ok = work_image[BMP_WIDTH/2][BMP_HEIGTH/2]==0;
+	if(ok){
+		printPassed("frameLoop","3");
+	}else{
+		printFailed("frameLoop","3");
 	}
 }

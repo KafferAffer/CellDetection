@@ -30,7 +30,10 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
 void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], char * outputname);
 
 //Runs the actual algorithm
-int detectCells(int argc, char** argv, int inframesize, int inthreshhold);
+int detectCells(int argc, char** argv);
+
+//Runs the algorithm with given framesize and threshhold
+int detectCellsWithInput(int argc, char** argv, int inframesize, int inthreshhold);
 
 //To switch between x and plus shape
 void plusLoop();

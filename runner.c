@@ -18,17 +18,17 @@ int main(int argc, char** argv) {
 	    exit(1);
 	}
 
-	int framesize = 11;
-	int threshhold = 90;
-
 	if (argc >= 5){
-		framesize = atoi(argv[3]);
-		threshhold = atoi(argv[4]);
+		//Detect the cells with given framesize and threshold and make file
+		int framesize = atoi(argv[3]);
+		int threshhold = atoi(argv[4]);
+		detectCellsWithInput(argc, argv, framesize, threshhold);
+	}else{
+		//Detect the cells and make file
+		detectCells(argc, argv);
 	}
-
-	//printf("Running program - a turtle made it to the water - V1.0\n");
-	//Detect the cells and make file
-	detectCells(argc, argv, framesize, threshhold);
+	
+	
 	
 	return 0;
 }
