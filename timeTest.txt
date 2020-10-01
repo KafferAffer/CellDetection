@@ -1,31 +1,22 @@
-Time spend on converting to binary: 6.000000 ms
-Time on erosion: 5.000000 ms
-Time on fram (Size: 11) loop: 33.000000 ms
-Time on erosion: 5.000000 ms
-Time on fram (Size: 11) loop: 31.000000 ms
+read image time: 299.000000 ms
+Time spend on converting to binary: 9.000000 ms
+Time on erosion: 8.000000 ms
+Time on fram (Size: 11) loop: 5.000000 ms
+Time on erosion: 7.000000 ms
+Time on fram (Size: 11) loop: 4.000000 ms
+Time on erosion: 9.000000 ms
+Time on fram (Size: 11) loop: 3.000000 ms
+Time on erosion: 7.000000 ms
+Time on fram (Size: 11) loop: 4.000000 ms
 Time on erosion: 6.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
+Time on fram (Size: 11) loop: 4.000000 ms
+Time on erosion: 6.000000 ms
+Time on fram (Size: 11) loop: 4.000000 ms
 Time on erosion: 5.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
-Time on erosion: 3.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
+Time on fram (Size: 11) loop: 3.000000 ms
+Time on erosion: 4.000000 ms
+Time on fram (Size: 11) loop: 3.000000 ms
 Time on erosion: 5.000000 ms
-Time on fram (Size: 11) loop: 31.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram (Size: 11) loop: 31.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram (Size: 11) loop: 31.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram (Size: 11) loop: 30.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
-Time on erosion: 3.000000 ms
-Time on fram (Size: 11) loop: 31.000000 ms
-Time on erosion: 4.000000 ms
-Time on fram (Size: 11) loop: 32.000000 ms
-Time on erosion: 3.000000 ms
-Time on fram (Size: 11) loop: 31.000000 ms
-Time on erosion: 4.000000 ms
-Total time: 767.000000 ms
+createOutputPic time taken: 48.000000 ms
+printfResult time: 287.000000 ms
+Total time: 731.000000 ms

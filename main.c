@@ -8,11 +8,11 @@
 #include "main.h"
 
 int cellCount = 0;
-int xcoordinates[4000] = {};
-int ycoordinates[4000] = {};
+int xcoordinates[400] = {};
+int ycoordinates[400] = {};
 
 int frameSize = 11;
-int threshhold = 90;
+int threshhold = 93;
 FILE *fptr;
 
 
@@ -26,6 +26,8 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
   clock_t start, end;
   double cpu_time_used;
   start = clock();
+
+  //Loop through pixels and turn them into 1 or 0
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
       int r = input_image[x][y][0];
@@ -39,6 +41,8 @@ void colorToBinary(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS
         }
     }
   }
+
+
   end = clock();
   cpu_time_used = end-start;
   if(fptr!=NULL)fprintf(fptr, "Time spend on converting to binary: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
@@ -169,8 +173,8 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
       tryToFrame(work_image,x,y);
     }
   }
-
-  //Make output image
+  /*
+  //---Make output image---
   workToOutput(work_image,output_image);
 
   //fixed length of num
@@ -188,6 +192,7 @@ void frameloop(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH]){
   sprintf(name, "testOutput_%s%i.bmp", intPrefix, picCount);
   picCount++;
   write_bitmap(output_image, name);
+  */
 
   //End time test
   end = clock();
@@ -225,6 +230,10 @@ void workToOutput(unsigned char work_image[BMP_WIDTH][BMP_HEIGTH], unsigned char
 }
 
 void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS], char * outputname){
+  //Time to ccreate output image
+  clock_t start, end;
+  double cpu_time_used;
+  start = clock();
   for (int x = 0; x < BMP_WIDTH; x++){
     for (int y = 0; y < BMP_HEIGTH; y++){
       for(int c = 0; c<BMP_CHANNELS; c++){
@@ -249,6 +258,9 @@ void createOutputPic(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNE
       }
   }
   write_bitmap(output_image, outputname);
+  end = clock();
+  cpu_time_used = end-start;
+  if(fptr!=NULL)fprintf(fptr, "createOutputPic time taken: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
 }
 
 
@@ -268,6 +280,33 @@ void fullLoop(){
   }
 }
 
+void readImage(char** argv){
+  clock_t readStart, readEnd;
+  double readCpu_time_used;
+  readStart = clock();
+  read_bitmap(argv[1], input_image);
+  readEnd = clock();
+  readCpu_time_used = readEnd-readStart;
+  if(fptr!=NULL)fprintf(fptr, "read image time: %f ms\n", readCpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+}
+
+void printfResult(){
+  clock_t start, end;
+  double cpu_time_used;
+  start = clock();
+
+  printf("%i ", cellCount );
+  printf("\n");
+  //printf("\t");
+  for (int i = 0; i < cellCount; i++){
+      printf("(%i,%i)\n", xcoordinates[i], ycoordinates[i]);
+  }
+
+  //End time test
+  end = clock();
+  cpu_time_used = end-start;
+  if(fptr!=NULL)fprintf(fptr, "printfResult time: %f ms\n", cpu_time_used * 1000.0 /CLOCKS_PER_SEC);
+}
 
 //Main function
 int detectCells(int argc, char** argv)
@@ -283,26 +322,25 @@ int detectCells(int argc, char** argv)
   
   
   //Load image from file
-  read_bitmap(argv[1], input_image);
+  readImage(argv);
 
   //Run binary
   colorToBinary(input_image,work_image);
 
+  /*
   workToOutput(work_image,output_image);
   write_bitmap(output_image, "startOutput.bmp");
+  */
 
   //Erode
   fullLoop();
 
-  //printf("Done detecting\n");
-
   // create output
   createOutputPic(input_image,output_image, argv[2]);
 
-  //printf("Output image made!\n");
-
-  printf("%i ", cellCount );
-  printf("\t");
+  //Print cellCount and coordinates
+  printfResult();
+  
 
   //End time test
   end = clock();
